@@ -172,9 +172,10 @@ class HBNBCommand(cmd.Cmd):
             new_dict = self.parse_key_value(l[1::])
             #print(new_dict)
             new_instance = HBNBCommand.classes[l[0]](**new_dict)
-            storage.new(new_instance)
             print(new_instance.id)
+            storage.new(new_instance)
             new_instance.save()
+            
             
     def help_create(self):
         """ Help information for the create method """
