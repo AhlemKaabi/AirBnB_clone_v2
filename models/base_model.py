@@ -9,7 +9,7 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 class BaseModel:
-    id = Column(string(60), primary_key=True, nullable=False)
+    id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
