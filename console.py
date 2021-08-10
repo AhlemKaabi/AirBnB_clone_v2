@@ -92,6 +92,52 @@ class HBNBCommand(cmd.Cmd):
             print('(hbnb) ', end='')
         return stop
 
+    def parse_key_value(self, l):
+        """ 
+            generate a dictionary with key value pair that 
+            each key is an object attribute 
+        """
+        #print(l)
+        the_dict = {}
+        for argument in l:
+            #print(argument)
+            new_l = argument.split("=")
+            key = new_l[0]
+            value = new_l[1]
+            #print(value)
+            if (value[0] == '"'):
+                #print("yes")
+                if value[len(value) - 1] == '"':
+                    #print("yes")
+                    new_value = value[1:len(value) - 1]
+                    #print(new_value)
+                    clean_value = ""
+                    if '"' in new_value:
+                        ins = '\"'
+                        before = '"'
+                        clean_value = new_value.replace(before, ins, 1)
+                    if '_' in value:
+                        clean_value = new_value.replace('_', ' ')
+                    #print(clean_value)
+                    if clean_value:
+                        #print("value was indeed cleaned")
+                        the_dict.update({key: clean_value})
+                        #print(the_dict)
+                    else:
+                        the_dict.update({key: new_value})
+                        #print(the_dict)
+                else:
+                    # error string must end with "
+                    pass
+            else:
+                # value is a number        
+                if value.isdigit():
+                    number = int(value)
+                else:
+                    number = float(value)
+                the_dict.update({key: number})
+        return (the_dict)
+
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
         exit()
@@ -118,14 +164,19 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args.split(" ")[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
-
+        else:
+            l = args.split(" ")
+            new_dict = self.parse_key_value(l[1::])
+            #print(new_dict)
+            new_instance = HBNBCommand.classes[l[0]](**new_dict)
+            print(new_instance.id)
+            storage.new(new_instance)
+            new_instance.save()
+            
+            
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
