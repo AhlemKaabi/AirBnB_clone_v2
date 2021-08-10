@@ -9,7 +9,7 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 class BaseModel:
-    id = Column(string(60), primary_key=True, nullable=False)
+    id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
@@ -27,12 +27,12 @@ class BaseModel:
                 kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
             else:
-                kwargs.update({'updated_at': datetime.utcnow()})    
+                kwargs.update({'updated_at': datetime.utcnow()})
             if 'created_at' in kwargs.keys():
                 kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
             else:
-                kwargs.update({'created_at': datetime.utcnow()})    
+                kwargs.update({'created_at': datetime.utcnow()})
             if 'id' not in kwargs.keys():
                 kwargs.update({'id': str(uuid.uuid4())})
             if '__class__' in kwargs.keys():
@@ -64,8 +64,8 @@ class BaseModel:
         return dictionary
 
     def delete(self):
-        """ 
-        to delete the current instance from the storage. 
-        remember self is the instance 
+        """
+        to delete the current instance from the storage.
+        remember self is the instance
         """
         storage.delete(self)
