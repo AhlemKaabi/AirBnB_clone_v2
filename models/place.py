@@ -14,7 +14,7 @@ class Place(BaseModel, Base):
         """ Initializes Place
         """
         super().__init__(*args, **kwargs)
-    amenity_ids = []
+
     if env == "db":
         # DBstorange
         __tablename__ = "places"
@@ -51,6 +51,7 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self):
+            amenity_ids = []
             place_amenity_instance = []
             all_amenities = models.storage.all(Amenity)
             for one_amenity in all_amenities:
@@ -60,6 +61,7 @@ class Place(BaseModel, Base):
 
         @property
         def amenities(self, amenity_obj):
+            amenity_ids = []
             if isinstance(Amenity, amenity_obj):
                 for one_amenity in models.storage.all(Amenity):
                     amenity_ids.append(one_amenity.id)
