@@ -94,24 +94,24 @@ class HBNBCommand(cmd.Cmd):
         return stop
 
     def parse_key_value(self, l):
-        """ 
-            generate a dictionary with key value pair that 
-            each key is an object attribute 
         """
-        #print(l)
+            generate a dictionary with key value pair that
+            each key is an object attribute
+        """
+        # print(l)
         the_dict = {}
         for argument in l:
-            #print(argument)
+            # print(argument)
             new_l = argument.split("=")
             key = new_l[0]
             value = new_l[1]
-            #print(value)
+            # print(value)
             if (value[0] == '"'):
-                #print("yes")
+                # print("yes")
                 if value[len(value) - 1] == '"':
-                    #print("yes")
+                    # print("yes")
                     new_value = value[1:len(value) - 1]
-                    #print(new_value)
+                    # print(new_value)
                     clean_value = ""
                     if '"' in new_value:
                         ins = '\"'
@@ -119,19 +119,19 @@ class HBNBCommand(cmd.Cmd):
                         clean_value = new_value.replace(before, ins, 1)
                     if '_' in value:
                         clean_value = new_value.replace('_', ' ')
-                    #print(clean_value)
+                    # print(clean_value)
                     if clean_value:
-                        #print("value was indeed cleaned")
+                        # print("value was indeed cleaned")
                         the_dict.update({key: clean_value})
-                        #print(the_dict)
+                        # print(the_dict)
                     else:
                         the_dict.update({key: new_value})
-                        #print(the_dict)
+                        # print(the_dict)
                 else:
                     # error string must end with "
                     pass
             else:
-                # value is a number        
+                # value is a number
                 if value.isdigit():
                     number = int(value)
                 else:
@@ -171,14 +171,13 @@ class HBNBCommand(cmd.Cmd):
         else:
             l = args.split(" ")
             new_dict = self.parse_key_value(l[1::])
-            #print(new_dict)
+            # print(new_dict)
             print(l[0])
             new_instance = HBNBCommand.classes[l[0]](**new_dict)
             print(new_instance.id)
-            #storage.new(new_instance)
+            # storage.new(new_instance)
             new_instance.save()
-            
-            
+
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -260,9 +259,8 @@ class HBNBCommand(cmd.Cmd):
                 return
             if env == "db":
                 obj_dict = storage.all(args)
-                for k, v in obj_dict.items():
-                    del v.__dict__['_sa_instance_state']
-                    print_list.append(str(v.__dict__))
+                for key in obj_dict:
+                    print_list.append(str(obj_dict[key]))
             else:
                 for k, v in storage._FileStorage__objects.items():
                     if k.split('.')[0] == args:
@@ -270,7 +268,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             if env == "db":
                 obj_dict = storage.all()
-                print(obj_dict)
+                for key in obj_dict:
+                    print_list.append(obj_dict[key])
             else:
                 for k, v in storage._FileStorage__objects.items():
                     print_list.append(str(v))

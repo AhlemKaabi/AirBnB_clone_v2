@@ -12,6 +12,7 @@ if models.env == "db":
 else:
     Base = object
 
+
 class BaseModel:
     """A base class for all hbnb models"""
     if models.env == "db":
@@ -27,17 +28,17 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
-            #print(kwargs.keys())
+            # print(kwargs.keys())
             if 'updated_at' in kwargs.keys():
                 kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
+                                                        '%Y-%m-%dT%H:%M:%S.%f')
             else:
-                kwargs.update({'updated_at': datetime.utcnow()})    
+                kwargs.update({'updated_at': datetime.utcnow()})
             if 'created_at' in kwargs.keys():
                 kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
             else:
-                kwargs.update({'created_at': datetime.utcnow()})    
+                kwargs.update({'created_at': datetime.utcnow()})
             if 'id' not in kwargs.keys():
                 kwargs.update({'id': str(uuid.uuid4())})
             if '__class__' in kwargs.keys():
@@ -69,8 +70,8 @@ class BaseModel:
         return dictionary
 
     def delete(self):
-        """ 
-        to delete the current instance from the storage. 
-        remember self is the instance 
+        """
+        to delete the current instance from the storage.
+        remember self is the instance
         """
         storage.delete(self)

@@ -21,8 +21,6 @@ class DBStorage:
     __engine = None
     __session = None
 
-    
-
     def __init__(self):
         """ constructor for DBStorage """
         HBNB_MYSQL_USER = os.getenv('HBNB_MYSQL_USER')
@@ -34,7 +32,7 @@ class DBStorage:
                                       format(HBNB_MYSQL_USER,
                                              HBNB_MYSQL_PWD,
                                              HBNB_MYSQL_HOST,
-                                             HBNB_MYSQL_DB), pool_pre_ping=True)
+                                             HBNB_MYSQL_DB))
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -64,8 +62,6 @@ class DBStorage:
 
     def new(self, obj):
         """ add object to the current database session """
-        print(self.__session)
-        print(obj)
         self.__session.add(obj)
 
     def save(self):
