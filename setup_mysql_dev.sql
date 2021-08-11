@@ -1,7 +1,7 @@
 -- prepares a MySQL server for the project
--- FLUSH PRIVILEGES; when we grant some privileges for a user, 
--- running the command flush privileges will reloads the grant tables 
--- in the mysql database enabling the changes to take effect 
+-- FLUSH PRIVILEGES; when we grant some privileges for a user,
+-- running the command flush privileges will reloads the grant tables
+-- in the mysql database enabling the changes to take effect
 -- without reloading or restarting mysql service
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost' IDENTIFIED BY 'hbnb_dev_pwd';

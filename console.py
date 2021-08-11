@@ -172,7 +172,7 @@ class HBNBCommand(cmd.Cmd):
             l = args.split(" ")
             new_dict = self.parse_key_value(l[1::])
             # print(new_dict)
-            #print(l[0])
+            # print(l[0])
             new_instance = HBNBCommand.classes[l[0]](**new_dict)
             print(new_instance.id)
             # storage.new(new_instance)
