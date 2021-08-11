@@ -3,8 +3,9 @@
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy import inspect
 import os
-from model.base_model import BaseModel, Base
+import models
 from models.base_model import Base
 from models.base_model import BaseModel
 from models.amenity import Amenity
@@ -43,11 +44,11 @@ class DBStorage:
         d = {}
         if cls == None:
             for kls in self.classes:
-                for obj in self.__session.query(eval(cls)):
+                for obj in self.__session.query(eval(kls)).all():
                     key = str(kls) + '.' + obj.id
                     d[key] = obj
         else:
-            objs = self.__session.query(cls):
+            objs = self.__session.query(cls)
             for obj in objs:
                 key = str(cls) + '.' + obj.id
                 d[key] = obj
@@ -55,7 +56,9 @@ class DBStorage:
 
     def new(self, obj):
         """ add object to the current database session """
-        self.__session.add(self.d)
+        print(self.__session)
+        print(obj)
+        self.__session.add(obj)
 
     def save(self):
         """ commit all changes of the current database session """
@@ -72,5 +75,3 @@ class DBStorage:
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
         self.__session = Session
-
-            

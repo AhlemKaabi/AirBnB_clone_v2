@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from models import env
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -173,7 +174,7 @@ class HBNBCommand(cmd.Cmd):
             #print(new_dict)
             new_instance = HBNBCommand.classes[l[0]](**new_dict)
             print(new_instance.id)
-            storage.new(new_instance)
+            #storage.new(new_instance)
             new_instance.save()
             
             
@@ -251,18 +252,23 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            if env == "db":
+                storage.all(args)
+            else:
+                for k, v in storage._FileStorage__objects.items():
+                    if k.split('.')[0] == args:
+                        print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            if env == "db":
+                obj_dict = storage.all()
+            else:
+                for k, v in storage._FileStorage__objects.items():
+                    print_list.append(str(v))
 
         print(print_list)
 
