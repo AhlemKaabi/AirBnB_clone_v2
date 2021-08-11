@@ -16,13 +16,12 @@ from models.state import State
 from models.user import User
 
 
-
 class DBStorage:
     """This class manages storage with MySQL DB"""
     __engine = None
     __session = None
 
-    classes = ["State", "City", "User", "Place", "Review"]
+    
 
     def __init__(self):
         """ constructor for DBStorage """
@@ -40,19 +39,28 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """ query on the current database session """
+        """
+        Query on the curret database session all objects of the given class.
+        If cls is None, queries all types of objects.
+        Return:
+            Dict of queried classes in the format <class name>.<obj id> = obj.
+        """
         d = {}
-        if cls == None:
-            for kls in self.classes:
-                for obj in self.__session.query(eval(kls)).all():
-                    key = str(kls) + '.' + obj.id
-                    d[key] = obj
+        if cls is None:
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            for obj in objs:
+                key = obj.__class__.__name__ + '.' + obj.id
+                d[key] = obj
+            return d
         else:
+            if type(cls) == str:
+                cls = eval(cls)
             objs = self.__session.query(cls)
             for obj in objs:
-                key = str(cls) + '.' + obj.id
+                key = obj.__class__.__name__ + '.' + obj.id
                 d[key] = obj
-        return d
+            return d
 
     def new(self, obj):
         """ add object to the current database session """

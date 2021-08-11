@@ -172,6 +172,7 @@ class HBNBCommand(cmd.Cmd):
             l = args.split(" ")
             new_dict = self.parse_key_value(l[1::])
             #print(new_dict)
+            print(l[0])
             new_instance = HBNBCommand.classes[l[0]](**new_dict)
             print(new_instance.id)
             #storage.new(new_instance)
@@ -258,7 +259,10 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             if env == "db":
-                storage.all(args)
+                obj_dict = storage.all(args)
+                for k, v in obj_dict.items():
+                    del v.__dict__['_sa_instance_state']
+                    print_list.append(str(v.__dict__))
             else:
                 for k, v in storage._FileStorage__objects.items():
                     if k.split('.')[0] == args:
@@ -266,6 +270,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             if env == "db":
                 obj_dict = storage.all()
+                print(obj_dict)
             else:
                 for k, v in storage._FileStorage__objects.items():
                     print_list.append(str(v))
