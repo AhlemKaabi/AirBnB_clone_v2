@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 import models
+from models import env
 from models.review import Review
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
