@@ -3,7 +3,6 @@
 from sqlalchemy.sql.expression import null
 from models.base_model import BaseModel
 from sqlalchemy import Column, String, DateTime, ForeignKey
-from sqlalchemy.ext.declarative import relationship
 
 class Review(BaseModel):
     """ Review classto store review information """

@@ -2,9 +2,10 @@
 """ Place Module for HBNB project """
 import models
 from models.review import Review
+from models.amenity import Amenity
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, DateTime, ForeignKey, Integer, Float
-from sqlalchemy.ext.declarative import relationship
+from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
+from sqlalchemy.orm import relationship
 
 
 class Place(BaseModel, Base):
@@ -13,7 +14,7 @@ class Place(BaseModel, Base):
         """ Initializes Place
         """
         super().__init__(*args, **kwargs)
-
+    amenity_ids = []
     if env == "db":
         # DBstorange
         __tablename__ = "places"
@@ -27,9 +28,12 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float, nullable=False)
         longitude = Column(Float, nullable=False)
-        amenity_ids = []
         reviews = relationship('Review', cascade='all, delete', backref='place')
-
+        place_amenity = Table('place_amenity', Base.metadata,
+                            Column('place_id', String(60), ForeignKey('places.id')),
+                            Column('amenity_id', String(60), ForeignKey('right.id'))
+                        )
+        amenities = relationship('Amenity', secondary='place_amenity', viewonly=False)
     else:
         # filestorage
         # getter attribute reviews that returns the list
@@ -44,3 +48,20 @@ class Place(BaseModel, Base):
                     places_reviews_instances.append(one_review)
             return places_reviews_instances
 
+
+        @property
+        def amenities(self):
+            place_amenity_instance = []
+            all_amenities = models.storage.all(Amenity)
+            for one_amenity in all_amenities:
+                if one_amenity.id in amenity_ids:
+                    place_amenity_instance.append(one_amenity)
+            return place_amenity_instance
+
+        @property
+        def amenities(self, amenity_obj):
+            if isinstance(Amenity, amenity_obj):
+                for one_amenity in models.storage.all(Amenity):
+                    amenity_ids.append(one_amenity.id)
+            else:
+                pass
