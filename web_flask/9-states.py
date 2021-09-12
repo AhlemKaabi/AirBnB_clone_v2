@@ -13,7 +13,9 @@ app = Flask(__name__)
 def states_by_id(id=""):
     states = storage.all(cls=State)
     cities = storage.all(cls=City)
-    return render_template('9-states.html', states=states.values(), cities=cities.values(), id=id)
+    return render_template('9-states.html',
+                           states=states.values(),
+                           cities=cities.values(), id=id)
 
 
 if __name__ == '__main__':
