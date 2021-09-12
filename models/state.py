@@ -15,7 +15,14 @@ class State(BaseModel, Base):
         name = Column(String(128), nullable=False)
         cities = relationship("City", backref="state")
     else:
-        name = ""
+        @property
+        def cities(self):
+            list_of_city_objects = []
+            all_cities = models.storage.all(City)
+            for city in all_cities.values():
+                if city.state_id == self.id:
+                    list_of_city_objects.append(city)
+            return list_of_city_objects
 
     def __init__(self, *args, **kwargs):
         """initializes state"""
